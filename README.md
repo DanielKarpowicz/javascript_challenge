@@ -1,3 +1,3 @@
 # javascript_challenge
 
-https://github.com/DanielKarpowicz/javascript_challenge
+https://danielkarpowicz.github.io/ for link
