@@ -1,65 +1,86 @@
-// Assign the data from `data.js` to a descriptive variable
-var tableData = data;
+<html>
 
-// Set the reference to the table body, button and form
-var tbody = d3.select("tbody");
-var button = d3.select("button");
-var form = d3.select("form");
+<head>
+  <meta charset="utf-8">
+  <title>UFO Finder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/superhero/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+  <link rel="stylesheet" href="static/css/style.css">
+</head>
 
-// Create event handlers 
-button.on("click", runEnter);
-form.on("submit",runEnter);
+<body>
+  <div class="wrapper">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="index.html">UFO Sightings
+            <img class="nav-ufo" src="static/images/ufo.svg">
+          </a>
+        </div>
+      </div>
+    </nav>
+    <div class="hero text-center">
+      <h1>UFO Sightings</h1>
+      <p>The Truth is Out There</p>
+    </div>
+    <div class="container">
+      <div class="row margin-top-50">
+        <div class="col-md-2">
+          <aside class="filters">
+            <div class="panel panel-default">
+              <div class="panel-heading">Filter Search</div>
+              <div class="panel-body">
+                <form>
+                  <div class="form-group">
+                    <ul class="list-group" id="filters">
+                      <li class="filter list-group-item">
+                        <label for="date">Enter a Date</label>
+                        <input class="form-control" id="datetime" type="text" placeholder="1/11/2011">
+                        <label for="city">Enter a City</label>
+                        <input class="form-control" id="city" type="text" placeholder="atlanta">
+                        <label for="state">Enter a State</label>
+                        <input class="form-control" id="state" type="text" placeholder="ga">
+                        <label for="country">Enter a Country</label>
+                        <input class="form-control" id="country" type="text" placeholder="us">
+                        <label for="shape">Enter a Shape</label>
+                        <input class="form-control" id="shape" type="text" placeholder="circle">
+                      </li>
+                    </ul>
+                  </div>
+                  <button id="filter-btn" type="button" class="btn btn-default"><strong>SEARCH!</strong></button>
+                </form>
+              </div>
+            </div>
+          </aside>
+        </div>
+        <div class="col-md-10">
+          <div id="table-area" class="">
+            <table id="ufo-table" class="table table-striped">
+              <thead>
+                <tr>
+                  <th class="table-head">Date</th>
+                  <th class="table-head">City</th>
+                  <th class="table-head">State</th>
+                  <th class="table-head">Country</th>
+                  <th class="table-head">Shape</th>
+                  <th class="table-head">Duration</th>
+                  <th class="table-head">Comments</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="footer">
+      <span class="bottom">UFO Sightings</span>
+    </footer>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.js"></script>
+  <script src="static/js/data.js"></script>
+  <script src="static/js/app.js"></script>
+</body>
 
-// Use d3 to automatically populate tableData
-function defaultPopulate(tableData) {
-    tableData.forEach((ufoSighting) => {
-            var row = tbody.append("tr");
-            Object.entries(ufoSighting).forEach(([key, value]) => {
-                var cell = row.append("td");
-                cell.text(value);
-            });
-        });
-};
-
-defaultPopulate(tableData);
-
-// Complete the event handler function for the form
-function runEnter() {
-    // Prevent the page from refreshing
-    d3.event.preventDefault();
-
-    // Select the input element and get the raw HTML node
-    var inputDate = d3.select("#datetime").property("value");
-    var inputCity = d3.select("#city").property("value").toLowerCase();
-    var inputState = d3.select("#state").property("value").toLowerCase();
-    var inputCountry = d3.select("#country").property("value").toLowerCase();
-    var inputShape = d3.select("#shape").property("value").toLowerCase();
-
-    // Store the input conditions that have values into an array and set up conditional statement
-    var inputArray = [["datetime",inputDate], ["city", inputCity], ["state", inputState], ["country", inputCountry], ["shape", inputShape]];
-    var searchArray = inputArray.filter(inputItem => inputItem[1] !== "");
-    var filterCondition = searchArray.map(searchItem => "ufoSighting." + searchItem[0] + "===" + "'" + searchItem[1] + "'").join("&&")
-  
-    // Filter the data by input conditions
-    var filteredData = tableData.filter(ufoSighting => eval(filterCondition));
-    console.log(filteredData);
-    
-    // Reset the previous filtered data
-    tbody.html("");
-    
-    // Display filtered data
-    filteredData.forEach((ufoSighting) => {
-        var row = tbody.append("tr");
-        Object.entries(ufoSighting).forEach(([key, value]) => {
-            var cell = row.append("td");
-            cell.text(value);
-        });
-    });
-    // If no value entered in any area, autopopulate the entire data table
-    if (searchArray.length === 0) {
-        defaultPopulate(tableData);
-    } else if (filteredData.length === 0) {
-        // If no data found, display "No UFO Sighting found. Try again!"
-        tbody.append("tr").text("No UFO Sighting found. Try again!");
-    };
-};
+</html>
